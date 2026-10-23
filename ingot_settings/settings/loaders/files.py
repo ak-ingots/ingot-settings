@@ -1,11 +1,11 @@
-"""The loaders of the settings that the addon extends."""
+"""The file loader of the defaults with the formats of the addon."""
 
-__all__ = ("FileLoader",)
+__all__ = ("SettingsFileLoader",)
 
-from ingots.defaults.settings.loaders import FileLoader as BaseFileLoader
+from ingots.defaults.settings.loaders import FileLoader
 
 
-class FileLoader(BaseFileLoader):
+class SettingsFileLoader(FileLoader):
     """
     The file loader of the defaults with the formats of the addon, each a
     slot of its own: ``yaml_format = Slot(YamlFormat)`` for ``.yaml`` files.

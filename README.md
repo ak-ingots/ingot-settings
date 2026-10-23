@@ -16,13 +16,14 @@ its own, so an application installs only what it uses:
 import ingot_settings
 
 
-class AppProject(ingot_settings.Project):
+class AppProject(ingot_settings.SettingsProject):
     env_configs_prefix = "APP"
 ```
 
 An application with other addons joins the settings instead:
-`class AppSettings(HttpSettings, ingot_settings.Settings)`, and declares
-`settings = Slot(AppSettings)` in its project.
+`class AppSettings(HttpSettings, SourcesSettings)`, with `SourcesSettings`
+from `ingot_settings.settings`, and declares `settings = Slot(AppSettings)`
+in its project.
 
 **Status:** pre-alpha. 0.1.0 is the skeleton of the addon: its project, its
 settings and their file loader, with the formats of the defaults (INI, JSON);

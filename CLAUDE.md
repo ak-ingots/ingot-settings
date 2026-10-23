@@ -7,12 +7,14 @@ repeat what README or the ADRs say: link to them.
 
 `ingot-settings`: an addon of [Ingots](https://github.com/ak-ingots/ingots)
 with sources and formats for the settings of `ingots.defaults` beyond the
-standard library. 0.1.0 is the skeleton: `Project` (`project.py`) takes the
-addon's `Settings` (`settings.py`), whose file loader (`loaders.py`) will
-hold the formats as slots; YAML files come in 0.2.0, on PyYAML.
-`python -m ingot_settings` runs the addon on its own (prefix `INGOT`). Every integration sits behind an extra of its
-own and lives in its own module, the only one importing its dependency; the
-package imports none of them. A library (ADR 0003), Python >= 3.14, part of
+standard library. So far the skeleton, laid out as `ingots.defaults`, a unit
+in the `__init__.py` of its package: `SettingsProject` (`project.py`) takes
+the addon's `SourcesSettings` (`settings/`), whose `SettingsFileLoader`
+(`settings/loaders/files.py`) will hold the formats as slots; YAML files come
+in 0.2.0, on PyYAML. `python -m ingot_settings` runs the addon on its own
+(prefix `INGOT`). Every integration sits behind an extra of its own and lives
+in its own module, the only one importing its dependency; the package imports
+none of them. A library (ADR 0003), Python >= 3.14, part of
 the [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
 `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
 
@@ -77,6 +79,10 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   `.github/workflows/ci.yml`. Change them together.
 - CI runs exactly the `make` targets; a new check goes into `make check` and
   `ci.yml` together.
+- A class takes the prefix of the addon, `Settings`, so that an application
+  imports it under its own name, and inherits the class of the defaults
+  without an alias. The settings unit, which the prefix would double,
+  takes what the addon brings to it: `SourcesSettings`.
 - Code layout and naming follow ADR 0007; the PUER rules of `ingots` apply to
   an addon too: hooks start with an underscore and are overridden, not
   called; a protected member is touched only by its class, its subclasses

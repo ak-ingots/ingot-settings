@@ -9,7 +9,9 @@ from unittest import mock
 
 import ingot_settings
 from ingot_settings.__main__ import main
-from ingots.defaults import Project as DefaultsProject
+from ingot_settings.settings import SourcesSettings
+from ingot_settings.settings.loaders import SettingsFileLoader
+from ingots.defaults import Project
 from ingots.defaults.settings.loaders import BaseFormat, IniFormat, JsonFormat
 from ingots.puer.cli import CommandRunner
 
@@ -25,20 +27,18 @@ class ProjectTestCase(unittest.TestCase):
     def run_project(self, *argv: str) -> tuple[int, str]:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            code = CommandRunner(ingot_settings.Project, argv).run()
+            code = CommandRunner(ingot_settings.SettingsProject, argv).run()
         return code, out.getvalue()
 
     def test_the_project_extends_the_defaults(self) -> None:
-        self.assertTrue(issubclass(ingot_settings.Project, DefaultsProject))
-        self.assertIs(ingot_settings.Project.settings.cls, ingot_settings.Settings)
-        self.assertIs(
-            ingot_settings.Settings.file_loader.cls, ingot_settings.FileLoader
-        )
+        self.assertTrue(issubclass(ingot_settings.SettingsProject, Project))
+        self.assertIs(ingot_settings.SettingsProject.settings.cls, SourcesSettings)
+        self.assertIs(SourcesSettings.file_loader.cls, SettingsFileLoader)
 
     def test_the_file_loader_keeps_the_formats_of_the_defaults(self) -> None:
         kind: type[BaseFormat] = BaseFormat  # type: ignore[type-abstract]
         self.assertEqual(
-            [slot.cls for _, slot in ingot_settings.FileLoader.slots_iter(kind)],
+            [slot.cls for _, slot in SettingsFileLoader.slots_iter(kind)],
             [IniFormat, JsonFormat],
         )
 
