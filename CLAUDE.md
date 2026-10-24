@@ -68,7 +68,7 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   `cl-check` fails CI without one.
 - The version is static in `pyproject.toml` (`uv_build`, no setuptools-scm);
   it changes only at release time.
-- `ingots` is pinned to a minor version (`>=0.30.1,<0.31`): before 1.0 a minor
+- `ingots` is pinned to a minor version (`>=0.31.0,<0.32`): before 1.0 a minor
   version of the framework may break its addons. Moving on to the next one
   is a change of its own, with a news fragment.
 - Flat layout: the package is `ingot_settings/` at the root. The wheel must be
