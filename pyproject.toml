@@ -1,6 +1,6 @@
 [project]
 name = "ingot-settings"
-version = "0.1.0"
+version = "0.2.0.dev0"
 description = "Sources and formats for the settings of Ingots beyond the standard library."
 readme = "README.md"
 requires-python = ">=3.14"
@@ -21,6 +21,10 @@ classifiers = [
 ]
 # Before 1.0 a minor version of ingots may break its addons.
 dependencies = ["ingots>=0.30.1,<0.31"]
+
+# One extra per integration: an application installs only what it uses.
+[project.optional-dependencies]
+yaml = ["PyYAML>=6.0.2,<7"]
 
 [project.urls]
 repository = "https://github.com/ak-ingots/ingot-settings"
@@ -47,6 +51,8 @@ dev = [
     "flake8-class-attributes-order",
     "flake8-pyproject",
     "mypy",
+    "PyYAML",
+    "types-PyYAML",
 ]
 changelog = ["towncrier"]
 
