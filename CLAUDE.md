@@ -7,13 +7,17 @@ repeat what README or the ADRs say: link to them.
 
 `ingot-settings`: an addon of [Ingots](https://github.com/ak-ingots/ingots)
 with sources and formats for the settings of `ingots.defaults` beyond the
-standard library. 0.1.0 is the skeleton: `Project` (`project.py`) takes the
-addon's `Settings` (`settings.py`), whose file loader (`loaders.py`) will
-hold the formats as slots; YAML files come in 0.2.0, on PyYAML.
-`python -m ingot_settings` runs the addon on its own (prefix `INGOT`). Every integration sits behind an extra of its
-own and lives in its own module, the only one importing its dependency; the
-package imports none of them. A library (ADR 0003), Python >= 3.14, part of
-the [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
+standard library. Every integration is a unit of its own behind an extra
+(ADR 0004 composition): `ingot_settings/yaml/` (extra `yaml`, on PyYAML)
+holds `YamlSettings` in its `__init__.py` and `YamlFileLoader` with
+`YamlFormat` in `loaders.py`, the only module importing PyYAML, at the top:
+importing the unit without the extra fails at once. The package root imports
+no unit and exports nothing; an application joins the units it installed
+with its own settings. A unit's class names take its prefix (`Yaml`), and so
+do the members it adds (`yaml_format`). `make wheel-test` installs every
+extra (`EXTRAS`), and a test hides PyYAML to check the message without it.
+A library (ADR 0003), Python >= 3.14, part of the
+[ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
 `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
 
 ## Commands

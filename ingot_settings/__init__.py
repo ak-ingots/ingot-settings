@@ -1,11 +1,11 @@
 """
 ingot-settings: sources and formats for the settings of ``ingots.defaults``
-beyond the standard library. An application inherits from :class:`Project`,
-or joins :class:`Settings` with the settings of its other addons.
+beyond the standard library, each a unit behind an extra of its own. An
+application installs the extra and joins the unit's settings with its own:
+``pip install "ingot-settings[yaml]"``, then
+``class AppSettings(HttpSettings, YamlSettings)`` with
+``from ingot_settings.yaml import YamlSettings``. The package itself imports
+none of them.
 """
 
-__all__ = ("FileLoader", "Project", "Settings")
-
-from .loaders import FileLoader
-from .project import Project
-from .settings import Settings
+__all__ = ()

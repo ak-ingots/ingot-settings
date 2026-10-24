@@ -15,6 +15,9 @@ SRC := ingot_settings tests
 # matrix in .github/workflows/ci.yml.
 PYTHONS ?= 3.14 3.15
 
+# The extras the wheel is tested with: every integration.
+EXTRAS ?= yaml
+
 # What `cl-check` compares the branch with.
 AGAINST ?= origin/main
 
@@ -50,7 +53,7 @@ wheel-test: all  ## unittest on the built wheel, once per interpreter in PYTHONS
 		tmp=$$(mktemp -d); \
 		trap 'rm -rf "$$tmp"' EXIT; \
 		uv venv --quiet --python $$py "$$tmp/venv"; \
-		uv pip install --quiet --python "$$tmp/venv/bin/python" dist/*.whl; \
+		uv pip install --quiet --python "$$tmp/venv/bin/python" "$$(echo dist/*.whl)[$(EXTRAS)]"; \
 		cp -r tests "$$tmp/"; \
 		(cd "$$tmp" && INGOT_SETTINGS_WHEEL_TEST=1 venv/bin/python -m unittest discover -s tests -t .); \
 		rm -rf "$$tmp"; \
@@ -99,4 +102,4 @@ help:  ## Show this help
 		/^##@ / {printf "\n%s\n", substr($$0, 5); next} \
 		/^[a-z][a-zA-Z0-9_-]*:.*## / {printf "  %-12s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo
-	@echo "Variables: PYTHONS, AGAINST, VERSION"
+	@echo "Variables: PYTHONS, EXTRAS, AGAINST, VERSION"
