@@ -8,7 +8,9 @@ name: release
 # - Run by hand (workflow_dispatch), it is a rehearsal: main as
 #   X.Y.Z.devN, N the run number, to TestPyPI only.
 #
-# What is published is the build that `make wheel-test` tested.
+# What is published is the build that `make wheel-test` tested; PyPI takes
+# it once the workflow `index-test` of the meta repository has installed and
+# tested it as TestPyPI gives it.
 
 on:
   push:
@@ -72,8 +74,15 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
 
+  testpypi-check:
+    needs: [build, testpypi]
+    uses: ak-ingots/ingots-libs/.github/workflows/index-test.yml@main
+    with:
+      package: ingot-settings
+      version: ${{ needs.build.outputs.version }}
+
   pypi:
-    needs: testpypi
+    needs: testpypi-check
     if: github.ref_type == 'tag'
     runs-on: ubuntu-latest
     environment:
