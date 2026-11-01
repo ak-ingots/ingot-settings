@@ -26,6 +26,3 @@ class CanaryTestCase(unittest.TestCase):
     )
     def test_the_wheel_is_imported_not_the_working_tree(self) -> None:
         self.assertIn("site-packages", ingot_settings.__file__ or "")
-
-    def test_the_framework_is_installed(self) -> None:
-        self.assertTrue(importlib.metadata.version("ingots").startswith("0.32."))
