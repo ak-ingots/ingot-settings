@@ -48,12 +48,20 @@ coverage:  ## unittest on the working tree under coverage; fails below 99%
 # be imported only from the wheel.
 .PHONY: wheel-test
 wheel-test: all  ## unittest on the built wheel, once per interpreter in PYTHONS
+	@$(MAKE) --no-print-directory installed-test WHEEL="$$(echo dist/*.whl)"
+
+# The tests of tests/ on WHEEL, once per interpreter in PYTHONS: for `wheel-test`
+# and for the workflow `index-test` of the meta repository, which the `release`
+# workflow calls between TestPyPI and PyPI, on the files it has just published.
+.PHONY: installed-test
+installed-test:
+	@test -n "$(WHEEL)" || { echo "WHEEL=path/to.whl is required"; exit 1; }
 	@for py in $(PYTHONS); do \
-		echo "== wheel-test on Python $$py"; \
+		echo "== $(notdir $(WHEEL)) on Python $$py"; \
 		tmp=$$(mktemp -d); \
 		trap 'rm -rf "$$tmp"' EXIT; \
 		uv venv --quiet --python $$py "$$tmp/venv"; \
-		uv pip install --quiet --python "$$tmp/venv/bin/python" "$$(echo dist/*.whl)[$(EXTRAS)]"; \
+		uv pip install --quiet --python "$$tmp/venv/bin/python" "$(WHEEL)[$(EXTRAS)]"; \
 		cp -r tests "$$tmp/"; \
 		(cd "$$tmp" && INGOT_SETTINGS_WHEEL_TEST=1 venv/bin/python -m unittest discover -s tests -t .); \
 		rm -rf "$$tmp"; \
