@@ -2,6 +2,10 @@
 
 <!-- towncrier release notes start -->
 
+## [0.3.0] - 2026-11-01
+### Changed
+- Moved on to ingots 0.32.
+
 ## [0.2.0] - 2026-10-24
 ### Added
 - Added YAML files, the unit `ingot_settings.yaml` behind the `yaml` extra (`pip install "ingot-settings[yaml]"`, on PyYAML): `YamlSettings`, joined with an application's settings, read `--configs-file` in `.yaml` and `.yml` too, a mapping of config names to values. The base loader resolves no types: a scalar is a string its config converts, as from an environment variable; a tag, a key given twice and an alias of anything but a scalar are errors. Importing the unit without the extra fails, naming it.
