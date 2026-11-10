@@ -11,9 +11,9 @@ import unittest
 from unittest import mock
 
 import ingot_settings
-from ingot_settings.yaml import YamlFileLoader, YamlFormat, YamlSettings
+from ingot_settings.yaml import YamlFileLoader, YamlFormat, YamlSettingsUnit
 from ingots.defaults import Project
-from ingots.defaults.settings import Settings
+from ingots.defaults.settings import SettingsUnit
 from ingots.defaults.settings.configs import Configs, IntConfig
 from ingots.defaults.settings.loaders import (
     BaseFormat,
@@ -29,18 +29,18 @@ class HttpConfigs(Configs):
     HTTP_PORT = IntConfig(80)
 
 
-class HttpSettings(Settings):
+class HttpSettingsUnit(SettingsUnit):
     """The settings of another addon, with configs of its own."""
 
     configs = Slot(HttpConfigs)
 
 
-class AppSettings(HttpSettings, YamlSettings):
+class AppSettingsUnit(HttpSettingsUnit, YamlSettingsUnit):
     pass
 
 
 class AppProject(Project):
-    settings = Slot(AppSettings)
+    settings = Slot(AppSettingsUnit)
 
 
 class JsoncFormat(JsonFormat):
@@ -53,7 +53,7 @@ class JsoncFileLoader(FileLoader):
     jsonc_format = Slot(JsoncFormat)
 
 
-class JsoncSettings(Settings):
+class JsoncSettingsUnit(SettingsUnit):
     file_loader = Slot(JsoncFileLoader)
 
 
@@ -88,7 +88,7 @@ class YamlUnitTestCase(unittest.TestCase):
 
     def test_the_file_loader_adds_yaml_to_the_formats_of_the_defaults(self) -> None:
         kind: type[BaseFormat] = BaseFormat  # type: ignore[type-abstract]
-        self.assertIs(YamlSettings.file_loader.cls, YamlFileLoader)
+        self.assertIs(YamlSettingsUnit.file_loader.cls, YamlFileLoader)
         self.assertEqual(
             [slot.cls for _, slot in YamlFileLoader.slots_iter(kind)],
             [IniFormat, JsonFormat, YamlFormat],
@@ -108,19 +108,24 @@ class YamlUnitTestCase(unittest.TestCase):
         self.assertIn("HTTP_PORT = 9090\n", out.getvalue())
 
     def test_joined_file_loaders_take_a_class_extending_both(self) -> None:
-        with self.assertRaisesRegex(TypeError, r"BadSettings.file_loader = "):
+        with self.assertRaisesRegex(TypeError, r"BadSettingsUnit.file_loader = "):
 
-            class BadSettings(YamlSettings, JsoncSettings):  # type: ignore[misc]
+            class BadSettingsUnit(  # type: ignore[misc]
+                YamlSettingsUnit, JsoncSettingsUnit
+            ):
                 pass
 
         class AppFileLoader(YamlFileLoader, JsoncFileLoader):
             pass
 
-        class JoinedSettings(YamlSettings, JsoncSettings):
+        class JoinedSettingsUnit(YamlSettingsUnit, JsoncSettingsUnit):
             file_loader = Slot(AppFileLoader)
 
         kind: type[BaseFormat] = BaseFormat  # type: ignore[type-abstract]
         self.assertEqual(
-            {slot.cls for _, slot in JoinedSettings.file_loader.cls.slots_iter(kind)},
+            {
+                slot.cls
+                for _, slot in JoinedSettingsUnit.file_loader.cls.slots_iter(kind)
+            },
             {IniFormat, JsonFormat, YamlFormat, JsoncFormat},
         )

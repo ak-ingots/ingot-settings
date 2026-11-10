@@ -9,7 +9,7 @@ repeat what README or the ADRs say: link to them.
 with sources and formats for the settings of `ingots.defaults` beyond the
 standard library. Every integration is a unit of its own behind an extra
 (ADR 0004 composition): `ingot_settings/yaml/` (extra `yaml`, on PyYAML)
-holds `YamlSettings` in its `__init__.py` and `YamlFileLoader` with
+holds `YamlSettingsUnit` in its `__init__.py` and `YamlFileLoader` with
 `YamlFormat` in `loaders.py`, the only module importing PyYAML, at the top:
 importing the unit without the extra fails at once. The package root imports
 no unit and exports nothing; an application joins the units it installed
