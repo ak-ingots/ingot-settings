@@ -7,14 +7,14 @@ import typing as t
 import unittest
 from unittest import mock
 
-from ingot_settings.yaml import YamlFormat, YamlSettings
+from ingot_settings.yaml import YamlFormat, YamlSettingsUnit
 from ingots.defaults import Project as DefaultsProject
 from ingots.puer import Project, Slot
 from ingots.puer.cli import CommandRunner
 
 
 class YamlProject(DefaultsProject):
-    settings = Slot(YamlSettings)
+    settings = Slot(YamlSettingsUnit)
 
 
 class YamlFormatTestCase(unittest.TestCase):

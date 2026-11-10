@@ -13,25 +13,25 @@ extra of its own, and nothing is wired in by default: an application installs
 the extras it uses and joins their settings with its own.
 
 ```python
-from ingot_settings.yaml import YamlSettings  # pip install "ingot-settings[yaml]"
+from ingot_settings.yaml import YamlSettingsUnit  # pip install "ingot-settings[yaml]"
 from ingots.defaults import Project
 from ingots.puer import Slot
 
 
-class AppSettings(HttpSettings, YamlSettings):
+class AppSettingsUnit(HttpSettingsUnit, YamlSettingsUnit):
     pass
 
 
 class AppProject(Project):
     env_configs_prefix = "APP"
-    settings = Slot(AppSettings)
+    settings = Slot(AppSettingsUnit)
 ```
 
 Importing a unit without its extra fails at once, naming the extra.
 
 ## YAML files
 
-`ingot_settings.yaml`, the `yaml` extra: `YamlSettings` read `--configs-file`
+`ingot_settings.yaml`, the `yaml` extra: `YamlSettingsUnit` read `--configs-file`
 in YAML too (`.yaml`, `.yml`), next to INI and JSON: a mapping of config
 names to values.
 
@@ -64,7 +64,7 @@ class AppFileLoader(YamlFileLoader, TomlFileLoader):
     pass
 
 
-class AppSettings(YamlSettings, TomlSettings):
+class AppSettingsUnit(YamlSettingsUnit, TomlSettingsUnit):
     file_loader = Slot(AppFileLoader)
 ```
 
