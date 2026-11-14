@@ -2,6 +2,10 @@
 
 <!-- towncrier release notes start -->
 
+## [0.5.0] - 2026-11-14
+### Changed
+- Moved on to ingots 0.34.
+
 ## [0.4.0] - 2026-11-10
 ### Changed
 - Moved on to ingots 0.33. `YamlSettings` is `YamlSettingsUnit`, a settings
