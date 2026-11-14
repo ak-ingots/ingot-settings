@@ -9,7 +9,7 @@ from unittest import mock
 
 from ingot_settings.yaml import YamlFormat, YamlSettingsUnit
 from ingots.defaults import Project as DefaultsProject
-from ingots.puer import Project, Slot
+from ingots.puer import Project, Slot, create_entity
 from ingots.puer.cli import CommandRunner
 
 
@@ -20,7 +20,8 @@ class YamlProject(DefaultsProject):
 class YamlFormatTestCase(unittest.TestCase):
     @t.override
     def setUp(self) -> None:
-        self.format = YamlFormat(Project())
+        self.project = Project()
+        self.format = create_entity(YamlFormat, self.project)
 
     def test_a_mapping_gives_the_overrides(self) -> None:
         text = "HTTP_PORT: 9090\nHTTP_HOST: example.com\nHOSTS: [a, b]\n"
