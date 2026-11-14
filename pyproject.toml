@@ -20,7 +20,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 # Before 1.0 a minor version of ingots may break its addons.
-dependencies = ["ingots>=0.33.0,<0.34"]
+dependencies = ["ingots>=0.34.0,<0.35"]
 
 # One extra per integration: an application installs only what it uses.
 [project.optional-dependencies]
