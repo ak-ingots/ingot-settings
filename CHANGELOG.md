@@ -2,6 +2,10 @@
 
 <!-- towncrier release notes start -->
 
+## [0.7.0] - 2026-11-20
+### Changed
+- Moved on to ingots 0.36.
+
 ## [0.6.0] - 2026-11-17
 ### Changed
 - Moved on to ingots 0.35.
