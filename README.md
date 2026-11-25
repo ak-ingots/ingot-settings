@@ -1,5 +1,7 @@
 # ingot-settings
 
+[![PyPI](https://img.shields.io/pypi/v/ingot-settings.svg)](https://pypi.org/project/ingot-settings/)
+[![Python](https://img.shields.io/pypi/pyversions/ingot-settings.svg)](https://pypi.org/project/ingot-settings/)
 [![ci](https://github.com/ak-ingots/ingot-settings/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/ak-ingots/ingot-settings/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ak-ingots/ingot-settings/blob/main/LICENSE)
 
