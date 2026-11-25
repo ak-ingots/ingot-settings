@@ -1,24 +1,28 @@
 # CLAUDE.md
 
 Guidance for Claude Code in this repository. Keep it under 200 lines and do not
-repeat what README or the ADRs say: link to them.
+repeat what README, `docs/` or the ADRs say: link to them.
 
 ## What this is
 
 `ingot-settings`: an addon of [Ingots](https://github.com/ak-ingots/ingots)
 with sources and formats for the settings of `ingots.defaults` beyond the
-standard library. Every integration is a unit of its own behind an extra
-(ADR 0004 composition): `ingot_settings/yaml/` (extra `yaml`, on PyYAML)
-holds `YamlSettingsUnit` in its `__init__.py` and `YamlFileLoader` with
-`YamlFormat` in `loaders.py`, the only module importing PyYAML, at the top:
-importing the unit without the extra fails at once. The package root imports
-no unit and exports nothing; an application joins the units it installed
-with its own settings. A unit's class names take its prefix (`Yaml`), and so
-do the members it adds (`yaml_format`). `make wheel-test` installs every
-extra (`EXTRAS`), and a test hides PyYAML to check the message without it.
+standard library.
 A library (ADR 0003), Python >= 3.14, part of the
 [ak-ingots](https://github.com/ak-ingots) ecosystem; the meta repository
 `ingots-libs` holds the ecosystem-wide decisions in `docs/adr/`.
+
+## Layout
+
+- Every integration is a unit of its own behind an extra (ADR 0004).
+  `yaml/` (extra `yaml`, on PyYAML) holds `YamlSettingsUnit` in its
+  `__init__.py` and `YamlFileLoader` with `YamlFormat` in `loaders.py`, the
+  only module importing PyYAML, at the top: importing the unit without the
+  extra fails at once.
+- The package root imports no unit and exports nothing; an application
+  joins the units it installed with its own settings.
+- `make wheel-test` installs every extra (`EXTRAS`), and a test hides PyYAML
+  to check the message without it.
 
 ## Commands
 
@@ -58,8 +62,9 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
 - A release: a pull request sets the version (`uv version X.Y.Z`) and
   collates the changelog (`make cl-build VERSION=X.Y.Z`); after the merge,
   the tag `vX.Y.Z` on its commit starts the `release` workflow, which
-  publishes to TestPyPI, then to PyPI once the user approves the `pypi`
-  environment. Run by hand, the workflow rehearses on TestPyPI only.
+  publishes to TestPyPI, tests the package installed from it (the shared
+  workflow `index-test`), then publishes to PyPI once the user approves the
+  `pypi` environment. Run by hand, the workflow rehearses on TestPyPI only.
 
 ## Rules
 
@@ -81,10 +86,19 @@ One test: `uv run python -m unittest tests.test_canary.CanaryTestCase`.
   `.github/workflows/ci.yml`. Change them together.
 - CI runs exactly the `make` targets; a new check goes into `make check` and
   `ci.yml` together.
+- A comment tells what the code cannot: why it is so, a constraint from
+  outside (a bug of a library, a standard, a measure), a trap for the next
+  change. None repeats the code, a name, a docstring or what a key of a
+  config says, nor tells the history of a change: that is the commit's.
 - Code layout and naming follow ADR 0007; the PUER rules of `ingots` apply to
   an addon too: hooks start with an underscore and are overridden, not
   called; a protected member is touched only by its class, its subclasses
   and its own package.
+
+Of this package:
+
+- A unit's class names take its prefix (`Yaml`), and so do the members it
+  adds (`yaml_format`).
 
 ## Design
 
