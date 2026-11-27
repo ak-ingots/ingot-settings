@@ -2,6 +2,12 @@
 
 <!-- towncrier release notes start -->
 
+## [0.9.0] - 2026-11-27
+### Changed
+- On ingots 0.38: the command line a domain of the defaults, its runner
+  imported from `ingots.defaults.cli`; the configs printed on configuring
+  only when `IS_PRINT_CONFIGS` is on, to the standard error.
+
 ## [0.8.0] - 2026-11-24
 ### Changed
 - Moved on to ingots 0.37.
