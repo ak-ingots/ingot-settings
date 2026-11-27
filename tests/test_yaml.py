@@ -10,7 +10,7 @@ from unittest import mock
 from ingot_settings.yaml import YamlFormat, YamlSettingsUnit
 from ingots.defaults import Project as DefaultsProject
 from ingots.puer import Project, Slot, create_entity
-from ingots.puer.cli import CommandRunner
+from ingots.defaults.cli import CommandRunner
 
 
 class YamlProject(DefaultsProject):
@@ -149,7 +149,7 @@ class YamlFileTestCase(unittest.TestCase):
 
     def test_a_value_its_config_does_not_convert_is_wrong(self) -> None:
         path = self.tmp / "configs.yaml"
-        path.write_text("IS_PRINT_CONFIGS: {a: 1}\n")
+        path.write_text("IS_CONFIGURE_LOGGING: {a: 1}\n")
         with (
             contextlib.redirect_stdout(io.StringIO()),
             self.assertLogs("ingots.defaults.settings", "WARNING") as logs,
@@ -160,6 +160,6 @@ class YamlFileTestCase(unittest.TestCase):
             ).run()
         self.assertEqual(code, 0)
         self.assertIn(
-            "IS_PRINT_CONFIGS: cannot convert dict {'a': '1'}; ignored",
+            "IS_CONFIGURE_LOGGING: cannot convert dict {'a': '1'}; ignored",
             logs.output[0],
         )

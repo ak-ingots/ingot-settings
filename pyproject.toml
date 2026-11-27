@@ -21,7 +21,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Typing :: Typed",
 ]
-dependencies = ["ingots>=0.37.0,<0.38"]
+dependencies = ["ingots>=0.38.0,<0.39"]
 
 [project.optional-dependencies]
 yaml = ["PyYAML>=6.0.2,<7"]

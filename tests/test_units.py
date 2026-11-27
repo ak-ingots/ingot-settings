@@ -22,7 +22,7 @@ from ingots.defaults.settings.loaders import (
     JsonFormat,
 )
 from ingots.puer import Slot
-from ingots.puer.cli import CommandRunner
+from ingots.defaults.cli import CommandRunner
 
 
 class HttpConfigs(Configs):
